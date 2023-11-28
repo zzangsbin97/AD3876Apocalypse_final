@@ -49,7 +49,7 @@ public class JPFrame extends JFrame {
 	private Monster monster11;
 	private Monster monster12;
 	
-	private int totalTime = 5000;
+	private int totalTime = 30000;
 	public static int score = 0;
 	
 	
