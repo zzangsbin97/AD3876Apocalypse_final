@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 
 public class Monster extends JLabel 
 {
+	private JPFrame jpFrame;
 	
 	private boolean standing = true;
 	private boolean right = false;
@@ -29,8 +31,11 @@ public class Monster extends JLabel
 	
 	private ImageIcon playerR, playerL;
 	
-	public Monster(int posX, int posY) 
+	public Monster(int posX, int posY, JPFrame jpFrame) 
 	{
+		
+		this.jpFrame = jpFrame;
+		
 		x = posX;
 		y = posY;
 		initObject();
@@ -113,6 +118,8 @@ public class Monster extends JLabel
 		if (hp <= 0) {
 			survive = false;
 			setVisible(false);
+			
+			SwingUtilities.invokeLater(() -> jpFrame.increaseScore());
 			
 			 new Thread(() -> {
 	                try {

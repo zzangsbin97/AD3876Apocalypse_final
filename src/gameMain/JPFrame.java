@@ -15,11 +15,20 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import javax.swing.*;
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class JPFrame extends JFrame {
 	
 	private JLabel backgroundMap;
 	private Player player;
 	private Attack attack;
+	private JLabel timerLabel;
+	private JLabel scoreLabel;
+	private Timer timer;
 	
 	private Monster monster1;
 	private Monster monster2;
@@ -34,12 +43,16 @@ public class JPFrame extends JFrame {
 	private Monster monster11;
 	private Monster monster12;
 	
+	private int totalTime = 30000;
+	private int score = 0;
+	
 	
 	public JPFrame() {
 		initObject();
 		initSetting();
 		initListener();
 		initMonster();
+		initTimer();
 		setVisible(true);
 	}
 	
@@ -53,6 +66,23 @@ public class JPFrame extends JFrame {
 		
 		this.add(player);
 		this.add(attack);
+		
+		timerLabel = new JLabel("Time : 30");
+		timerLabel.setFont(new Font("", Font.BOLD, 30));
+		timerLabel.setForeground(Color.BLUE);
+        timerLabel.setBounds(600, 10, 150, 20);
+        add(timerLabel);
+
+        scoreLabel = new JLabel("Score : 0");
+        scoreLabel.setFont(new Font("", Font.BOLD, 30));
+        scoreLabel.setForeground(Color.BLUE);
+        scoreLabel.setBounds(600, 30, 150, 20);
+        add(scoreLabel);
+	}
+	
+	public void increaseScore() {
+		score++;
+		scoreLabel.setText("Score : " + score);
 	}
 	
 	private void initSetting() {
@@ -63,21 +93,21 @@ public class JPFrame extends JFrame {
 	}
 	
 	private void initMonster() {
-		this.monster1 = new Monster(200, 140);
-		this.monster2 = new Monster(480, 140);
-		this.monster3 = new Monster(728, 140);
+		this.monster1 = new Monster(200, 140, this);
+		this.monster2 = new Monster(480, 140, this);
+		this.monster3 = new Monster(728, 140, this);
 		
-		this.monster4 = new Monster(235, 257);
-		this.monster5 = new Monster(633, 257);
+		this.monster4 = new Monster(235, 257, this);
+		this.monster5 = new Monster(633, 257, this);
 		
-		this.monster6 = new Monster(165, 387);
-		this.monster7 = new Monster(323, 387);
-		this.monster8 = new Monster(512, 387);
-		this.monster9 = new Monster(724, 387);
+		this.monster6 = new Monster(165, 387, this);
+		this.monster7 = new Monster(323, 387, this);
+		this.monster8 = new Monster(512, 387, this);
+		this.monster9 = new Monster(724, 387, this);
 		
-		this.monster10 = new Monster(236, 525);
-		this.monster11 = new Monster(424, 525);
-		this.monster12 = new Monster(824, 525);
+		this.monster10 = new Monster(236, 525, this);
+		this.monster11 = new Monster(424, 525, this);
+		this.monster12 = new Monster(824, 525, this);
 		
 		this.add(monster1);
 		this.add(monster2);
@@ -195,6 +225,28 @@ public class JPFrame extends JFrame {
 				}
 			}
 		});
+	}
+	
+	private void initTimer() {
+		int sec = 1000;
+		
+		timer = new Timer(sec, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				totalTime -= 1000;
+				int seconds = totalTime / 1000;
+				
+				if (totalTime >= 0) {
+					timerLabel.setText("Time : "+seconds);
+				}
+				else {
+					timer.stop();
+					timerLabel.setText("Game Over");
+				}
+			}
+		});
+		
+		timer.start();
 	}
 	
 	public static void main(String[] args) 
