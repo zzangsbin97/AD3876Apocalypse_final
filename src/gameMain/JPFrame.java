@@ -5,6 +5,12 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import javax.swing.JOptionPane;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
@@ -43,8 +49,8 @@ public class JPFrame extends JFrame {
 	private Monster monster11;
 	private Monster monster12;
 	
-	private int totalTime = 30000;
-	private int score = 0;
+	private int totalTime = 5000;
+	public static int score = 0;
 	
 	
 	public JPFrame() {
@@ -242,6 +248,7 @@ public class JPFrame extends JFrame {
 				else {
 					timer.stop();
 					timerLabel.setText("Game Over");
+					System.exit(0);
 				}
 			}
 		});
@@ -251,6 +258,28 @@ public class JPFrame extends JFrame {
 	
 	public static void main(String[] args) 
 	{
+		
+		String userName = JOptionPane.showInputDialog("UserName: ");
+		
+        // 작업 완료 메시지 표시
+    	
+    	
+    	try{
+    		File file = new File("recore.txt");
+    	
+    		FileWriter fw = new FileWriter(file);
+    		BufferedWriter writer = new BufferedWriter(fw);
+    		
+    		writer.write(userName + "     " + Integer.toString(score) + "\n");
+    		
+    		writer.close();
+    		
+    	} catch(IOException e) {
+    		e.printStackTrace();
+    	}
+        
+        
+		
 		new JPFrame();
 	}
 
