@@ -4,6 +4,8 @@ import javax.swing.ImageIcon;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.Rectangle;
+
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
@@ -16,6 +18,7 @@ import lombok.Setter;
 public class Monster extends JLabel 
 {
 	private JPFrame jpFrame;
+	private Player player;
 	
 	private boolean standing = true;
 	private boolean right = false;
@@ -41,6 +44,7 @@ public class Monster extends JLabel
 		initObject();
 		initSetting(posX, posY);
 		initWandering();
+		checkCollision();
 	}
 	
 	private void initObject() 
@@ -149,6 +153,39 @@ public class Monster extends JLabel
 				}
 			}
 		}).start();
+	}
+	
+	private void checkCollision() 
+	{
+		new Thread(() -> {
+			while(survive)
+			{
+				int playerX = player.getX();
+		        int playerY = player.getY();
+		        int playerWidth = player.getWidth();
+		        int playerHeight = player.getHeight();
+
+		        Rectangle playerRect = new Rectangle(playerX, playerY, playerWidth, playerHeight);
+		        Rectangle monsterRect = new Rectangle(x, y, getWidth(), getHeight());
+		        
+		        if(playerRect.intersects(monsterRect))
+		        {
+		        	player.decreaseHP();
+		        	try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+		        }
+		        
+	        	try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}).start(); 
 	}
 
 	

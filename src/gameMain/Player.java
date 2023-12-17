@@ -3,6 +3,7 @@
 package gameMain;
 
 import java.awt.Color;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,7 +17,7 @@ import lombok.Setter;
 public class Player extends JLabel {
 	// 좌측 상단 좌표
 	public int x = 100;
-	public int y = 500; // 원래 500
+	public int y = 500;
 	
 	// public static int score = 0;
 
@@ -27,6 +28,8 @@ public class Player extends JLabel {
 	private boolean hitbox = false;
 	public boolean leftWay = false;
 	public boolean rightWay = false;
+	public boolean attackL = false;
+	public boolean attackR = false;
 
 	private boolean leftWallCrash = false;
 	private boolean rightWallCrash = false;
@@ -35,8 +38,10 @@ public class Player extends JLabel {
 	private int speed = 2;
 	private int fallSpeed = 2;
 	private long sleepTime = 15; // 원래 15
+	private int hp = 5;
 
-	private ImageIcon playerR, playerL, playerA;
+	private ImageIcon playerR, playerL;
+	private ImageIcon playerAttackL, playerAttackR;
 	private Attack attack = new Attack();
 
 	public Player() {
@@ -50,11 +55,20 @@ public class Player extends JLabel {
 	{
 		playerR = new ImageIcon("Image/playerRR.gif");
 		playerL = new ImageIcon("Image/playerLL.gif");
-		playerA = new ImageIcon("Image/실험공격.jpg");
-
+		
+		playerAttackL = new ImageIcon("Image/attackL.png");
+		Image image = playerAttackL.getImage();
+		Image changeImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon = new ImageIcon(changeImage);
+		playerAttackL = new ImageIcon(changeImage);
+		
+		playerAttackR = new ImageIcon("Image/attackR.png");
+		image = playerAttackR.getImage();
+		changeImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		changeIcon = new ImageIcon(changeImage);
+		playerAttackR = new ImageIcon(changeImage);
 	}
 	
-
 	private void initSetting() {
 		setIcon(playerR);
 		// setSize(50, 50);
@@ -105,7 +119,41 @@ public class Player extends JLabel {
 			}
 		}).start();
 	}
+	
+	public void playerAttackL() {
+		attackL = true;
+		left = false;
+		right = false;
+		
+		new Thread(() -> {
+			while (attackL) {
+				setIcon(playerAttackL);
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			setIcon(playerL);
+		}).start();
+	}
 
+	public void playerAttackR() {
+		attackR = true;
+		
+		new Thread(() -> {
+			while (attackR) {
+				setIcon(playerAttackR);
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			setIcon(playerR);
+		}).start();
+	}
+	
 	public void jump() {
 		if (!platform) {
 			return;
@@ -211,6 +259,13 @@ public class Player extends JLabel {
 
 		}).start();
 
+	}
+	
+	public void decreaseHP() {
+		hp--;
+		if (hp <= 0) {
+			System.exit(0);
+		}
 	}
 
 	public boolean checkRGB(Color point, int R, int G, int B) {

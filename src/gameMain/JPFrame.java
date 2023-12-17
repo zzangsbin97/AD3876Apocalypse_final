@@ -27,11 +27,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import lombok.*;
+
+@Getter
+@Setter
+
 public class JPFrame extends JFrame {
 	
 	private JLabel backgroundMap;
 	private Player player;
 	private Attack attack;
+	private JLabel board;
 	private JLabel timerLabel;
 	private JLabel scoreLabel;
 	private Timer timer;
@@ -49,17 +55,21 @@ public class JPFrame extends JFrame {
 	private Monster monster11;
 	private Monster monster12;
 	
-	private int totalTime = 30000;
+	private String userName;
+	
+	private int totalTime = 5000;
 	public static int score = 0;
 	
 	
 	public JPFrame() {
+		userName = JOptionPane.showInputDialog("UserName: ");
 		initObject();
 		initSetting();
 		initListener();
 		initMonster();
 		initTimer();
 		setVisible(true);
+		
 	}
 	
 	private void initObject() {
@@ -73,17 +83,21 @@ public class JPFrame extends JFrame {
 		this.add(player);
 		this.add(attack);
 		
-		timerLabel = new JLabel("Time : 30");
+		timerLabel = new JLabel("Timer : 30");
 		timerLabel.setFont(new Font("", Font.BOLD, 30));
-		timerLabel.setForeground(Color.BLUE);
-        timerLabel.setBounds(600, 10, 150, 20);
+		timerLabel.setForeground(Color.BLACK);
+        timerLabel.setBounds(0, 0, 150, 30);
         add(timerLabel);
 
         scoreLabel = new JLabel("Score : 0");
         scoreLabel.setFont(new Font("", Font.BOLD, 30));
-        scoreLabel.setForeground(Color.BLUE);
-        scoreLabel.setBounds(600, 30, 150, 20);
+        scoreLabel.setForeground(Color.BLACK);
+        scoreLabel.setBounds(0, 30, 150, 30);
         add(scoreLabel);
+        
+        board = new JLabel(new ImageIcon("Image/board.png"));
+		board.setBounds(0, 0, 150, 60);
+		add(board);
 	}
 	
 	public void increaseScore() {
@@ -156,6 +170,7 @@ public class JPFrame extends JFrame {
 						break;
 					case KeyEvent.VK_A:
 						if (!attack.isAttack() && player.leftWay == true) {
+							player.playerAttackL();
 							attack.attackL(player.x, player.y, monster1);
 							attack.attackL(player.x, player.y, monster2);
 							attack.attackL(player.x, player.y, monster3);
@@ -170,6 +185,7 @@ public class JPFrame extends JFrame {
 							attack.attackL(player.x, player.y, monster12);
 						}
 						else if(!attack.isAttack() && player.rightWay == true) {
+							player.playerAttackR();
 							attack.attackR(player.x, player.y, monster1);
 							attack.attackR(player.x, player.y, monster2);
 							attack.attackR(player.x, player.y, monster3);
@@ -186,6 +202,7 @@ public class JPFrame extends JFrame {
 						break;
 					case KeyEvent.VK_CONTROL:
 						if (!attack.isAttack() && player.leftWay == true) {
+							player.playerAttackL();
 							attack.attackL(player.x, player.y, monster1);
 							attack.attackL(player.x, player.y, monster2);
 							attack.attackL(player.x, player.y, monster3);
@@ -200,6 +217,7 @@ public class JPFrame extends JFrame {
 							attack.attackL(player.x, player.y, monster12);
 						}
 						else if(!attack.isAttack() && player.rightWay == true) {
+							player.playerAttackR();
 							attack.attackR(player.x, player.y, monster1);
 							attack.attackR(player.x, player.y, monster2);
 							attack.attackR(player.x, player.y, monster3);
@@ -227,7 +245,11 @@ public class JPFrame extends JFrame {
 						player.setRight(false);
 						break; 
 					case KeyEvent.VK_A:
+					case KeyEvent.VK_CONTROL:
+						player.setAttackL(false);
+						player.setAttackR(false);
 						attack.isAttack = false;
+						break;
 				}
 			}
 		});
@@ -243,11 +265,12 @@ public class JPFrame extends JFrame {
 				int seconds = totalTime / 1000;
 				
 				if (totalTime >= 0) {
-					timerLabel.setText("Time : "+seconds);
+					timerLabel.setText("Timer : "+seconds);
 				}
 				else {
 					timer.stop();
 					timerLabel.setText("Game Over");
+					recordScore(score, userName);
 					System.exit(0);
 				}
 			}
@@ -256,27 +279,34 @@ public class JPFrame extends JFrame {
 		timer.start();
 	}
 	
-	public static void main(String[] args) 
-	{
+	private void recordScore(int score, String userName) {
 		
-		String userName = JOptionPane.showInputDialog("UserName: ");
-		
-        // 작업 완료 메시지 표시
-    	
-    	
+		File file = new File("record.txt");
     	try{
-    		File file = new File("recore.txt");
-    	
-    		FileWriter fw = new FileWriter(file);
+    		
+    		FileWriter fw = new FileWriter(file, true);
     		BufferedWriter writer = new BufferedWriter(fw);
     		
-    		writer.write(userName + "     " + Integer.toString(score) + "\n");
+    		writer.write("			" + userName + "			" + Integer.toString(score) + "\n");
     		
     		writer.close();
     		
     	} catch(IOException e) {
     		e.printStackTrace();
     	}
+		
+	}
+	
+	public static void main(String[] args) 
+	{
+		
+		
+		
+        // 작업 완료 메시지 표시
+    	
+    	
+    	
+    		
         
         
 		

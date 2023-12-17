@@ -18,7 +18,7 @@ public class Attack extends JLabel {
 	private int x = 0;
 	private int y = 0;
 
-	public boolean isAttack = false;
+	public boolean isAttack;
 	
 	private ImageIcon attackL, attackR;
 
@@ -28,6 +28,8 @@ public class Attack extends JLabel {
 	}
 
 	private void initObject() {
+		isAttack = false;
+		
 		attackL = new ImageIcon("Image/crack1.png");
 		Image tempL = attackL.getImage();
 		Image changetempL = tempL.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -56,7 +58,7 @@ public class Attack extends JLabel {
 					x = playerX - 30;
 					y = playerY;
 					setLocation(x, y);
-					Thread.sleep(100);
+					Thread.sleep(300);
 					//setVisible(false);
 					
 					if (checkCollision(monster)) {
@@ -80,10 +82,10 @@ public class Attack extends JLabel {
 				try {
 					setVisible(true);
 					setIcon(attackR);
-					x = playerX + 30;
+					x = playerX + 50;
 					y = playerY;
 					setLocation(x, y);
-					Thread.sleep(100);
+					Thread.sleep(300);
 					//setVisible(false);
 					
 					if (checkCollision(monster)) {
