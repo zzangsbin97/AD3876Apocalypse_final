@@ -1,5 +1,3 @@
-
-
 package gameMain;
 
 import java.awt.Color;
@@ -7,6 +5,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import lombok.Getter;
 import lombok.Setter;

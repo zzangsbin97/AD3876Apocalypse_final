@@ -30,7 +30,7 @@ public class Monster extends JLabel
 	private int y;
 
 	private int speed = 1;
-	private int hp = 5;
+	private int hp = 1;
 	
 	private ImageIcon playerR, playerL;
 	

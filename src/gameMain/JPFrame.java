@@ -38,8 +38,11 @@ public class JPFrame extends JFrame {
 	private Player player;
 	private Attack attack;
 	private JLabel board;
+	private JLabel board2;
 	private JLabel timerLabel;
 	private JLabel scoreLabel;
+	private JLabel hpLabel;
+	private JLabel IDLabel;
 	private Timer timer;
 	
 	private Monster monster1;
@@ -57,7 +60,7 @@ public class JPFrame extends JFrame {
 	
 	private String userName;
 	
-	private int totalTime = 5000;
+	private int totalTime = 30000;
 	public static int score = 0;
 	
 	
@@ -95,9 +98,26 @@ public class JPFrame extends JFrame {
         scoreLabel.setBounds(0, 30, 150, 30);
         add(scoreLabel);
         
+        IDLabel = new JLabel(userName);
+        IDLabel.setFont(new Font("", Font.BOLD, 30));
+        IDLabel.setForeground(Color.BLACK);
+        IDLabel.setBounds(830, 30, 150, 30);
+        add(IDLabel);
+        
+        hpLabel = new JLabel("hp : 5");
+        hpLabel.setFont(new Font("", Font.BOLD, 30));
+        hpLabel.setForeground(Color.BLACK);
+        hpLabel.setBounds(830, 0, 150, 30);
+        add(hpLabel);
+        
         board = new JLabel(new ImageIcon("Image/board.png"));
 		board.setBounds(0, 0, 150, 60);
 		add(board);
+		
+		board2 = new JLabel(new ImageIcon("Image/board2.png"));
+		board2.setBounds(0, 0, 1830, 60);
+		add(board2);
+		
 	}
 	
 	public void increaseScore() {
