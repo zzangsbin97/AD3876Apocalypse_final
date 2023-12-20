@@ -10,7 +10,12 @@ import javax.swing.JLabel;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+/* [ Lombok 이란? ]
+Lombok이란 어노테이션 기반으로 코드를 자동완성 해주는 라이브러리이다. Lombok을 이용하면 Getter, Setter, Equlas, ToString 등과 
+다양한 방면의 코드를 자동완성 시킬 수 있다. 출처: https://mangkyu.tistory.com/78 [MangKyu's Diary:티스토리]
+*/
+
+@Getter // 필드에 선언하면 자동으로 getXxx()(boolean 타입인 경우, isXxx())와 setXxx() 메소드를 생성
 @Setter
 
 public class Attack extends JLabel {
