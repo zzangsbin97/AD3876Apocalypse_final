@@ -124,6 +124,15 @@ public class Monster extends JLabel
 			setVisible(false);
 			
 			SwingUtilities.invokeLater(() -> jpFrame.increaseScore());
+			// invokeLater는 전달된 Runnable 객체가 event dispatch thread(EDT)에서 실행되도록 큐에 넣고 곧바로 리턴한다(비동기적)
+			// 디스패치 스레드: 스윙에 관련된 작업이 이 디스패치 스레드를 통해 이루어짐
+			// 비동기: 요청을 보낸 후 응답과 관계 없이 다음 동작을 실행할 수 있는 방식
+			
+			// 이는 스윙 관련 이벤트들을 일렬로 나열하여 여러개의 이벤트가 동시에 하나의 스레드에 접근해서 데이터 조작을 하는 것을 막아줌
+			// 즉, 여러개의 이벤트가 하나의 속성을 동시에 바꿔주는 것을 막아주며 한 순간에 하나의 이벤트가 원하는 작업을 하게끔 함 
+
+			// invokeLater는 해당 블록이 EDT에서 비동기적으로 실행되도록 예약하는 것이지, 다른 스레드를 차단하는 것이 아님.
+			// 즉, increaseScore가 실행되는 동안에도 다른 스레드들은 계속해서 실행
 			
 			 new Thread(() -> {
 	                try {
